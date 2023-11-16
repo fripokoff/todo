@@ -32,7 +32,18 @@ git clone github.com/the01rch/todo
 ```bash 
 cd todo 
 ```
-3. Build and install it with : 
+
+3. Makefile line(9)
+-LINUX
+```bash
+@sudo cp todo /bin/
+```
+-MAC
+```bash
+@sudo cp todo /usr/local/bin
+```
+
+4. Build and install it with : 
 ```bash
 sudo make install
  ```
