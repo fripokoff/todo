@@ -1,5 +1,6 @@
 <h1 align="center">todo</h1>
 <h4 align="center">Simple todo app in cli for unix users !</h4>
+<h4 align="center">Mac supported and new command for adding tasks</h4>
 <div align="center"><img alt="todo" src="data/todo.png"/></div>
 
 ---
@@ -38,7 +39,7 @@ cd todo
 ```bash
 @sudo cp todo /bin/
 ```
--MAC
+-M
 ```bash
 @sudo cp todo /usr/local/bin
 ```
