@@ -89,6 +89,36 @@ and the project name.
 todo -a "send email" @work
 ```
 
+If you want to add all the files in the current directory as a task define the task as "all".
+
+```bash
+todo -a "all" @work
+```
+
+By default we do not include extensions, add -e
+
+```bash
+todo -a "all" -e @work
+```
+
+You can also exclude file extensions (.c, .h)
+
+```bash
+todo -a "all" -ex "c,h" @work
+```
+
+Or folders and extensions
+
+```bash
+todo -a "all" -ex "c" -d @work
+```
+
+Or all
+
+```bash
+todo -a "all" -d -e -ex "c" @work
+```
+
 ## Change Task status
 
 In order to change the status of a particular task you need to specify the

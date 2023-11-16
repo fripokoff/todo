@@ -4,6 +4,7 @@ import (
     "fmt"
     "os"
     "encoding/json"
+    "strings"
 )
 
 const (
@@ -177,16 +178,85 @@ func main() {
 
         }
     } else if len(os.Args) >= 4 {
+        if os.Args[2] == "all" {
+            exclude := []string{"out", "a","h"}
+            excludeDir := false
+            excludeExt := true
+            path, err := os.Getwd()
+            if err != nil {
+                
+                fmt.Printf("Error obtaining current directory :", err)
+            }
+            files, err := os.ReadDir(path)
+            if err != nil {
+                fmt.Printf("Error reading directory :", err)
+            }
+            if (os.Args[3] == "-ex"){
+            exclude = strings.Split(os.Args[4], ",")
+            }else if (os.Args[3] == "-d") {
+                excludeDir = true
+            } else if (os.Args[3] == "-e") {
+                excludeExt = false
+            }
+            if(os.Args[4] == "-ex" ){
+                exclude = strings.Split(os.Args[5], ",")
+            }else if (os.Args[4] == "-d") {
+                excludeDir = true
+            }  else if (os.Args[4] == "-e") {
+                excludeExt = false
+            }
+            if(os.Args[5] == "-ex" ){
+                exclude = strings.Split(os.Args[6], ",")
+            }else if (os.Args[5] == "-d") {
+                excludeDir = true
+            } else if (os.Args[5] == "-e") {
+                excludeExt = false
+            }
+            for _, file := range files {
+                isExcluded := false
+                filename := file.Name()
+                for _, ext := range exclude {
+                    if strings.HasSuffix(filename, ext) {
+                        isExcluded = true
+                    }
+                }
+                if isExcluded || excludeDir && file.IsDir() {
+                    continue
+                }else{
+                    index := strings.LastIndex(filename, ".")
+                    if index >= 0 {
+                        filenames := filename[0:index]
+                        if excludeExt {
+                        filename = filenames
+                        }
+                        if filename == "" || string(filename[0]) == "." {
+                            continue
+                         }
+                    }
+                    b, e, p, a := board_proj() 
+                    tab := json_to_array(p)
+                    l := List{}
+                    array2list(tab, &l)
+                    t := flag(tab, &l, filename)
+                    test, _ := json.MarshalIndent(t, "", " ")
+                    c := strconc(arr2str(a,0,b), test[1:len(test)-1])
+                    c = strconc(c, arr2str(a,e,len(a)))
+                    home := os.Getenv("HOME")
+                    os.WriteFile((home + "/.todo.json"), c, 0777)
+                }
+            }
+        }else{
         b, e, p, a := board_proj() 
         tab := json_to_array(p)
         l := List{}
         array2list(tab, &l)
-        t := flag(tab, &l)
+        t := flag(tab, &l, os.Args[2])
         test, _ := json.MarshalIndent(t, "", " ")
         c := strconc(arr2str(a,0,b), test[1:len(test)-1])
         c = strconc(c, arr2str(a,e,len(a)))
         home := os.Getenv("HOME")
         os.WriteFile((home + "/.todo.json"), c, 0777)
+        }
     } else if !is_flag() {
         fmt.Println(help())
         os.Exit(1)

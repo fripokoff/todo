@@ -4,11 +4,10 @@ import (
     "os"
     "strconv"
 )
-
-func flag(arr []data, l *List) []data {
+func flag(arr []data, l *List, arg string) []data {
     switch os.Args[1] {
         case "-a":
-            add_flag(l)
+            add_flag(l,arg)
             arr = list2array(l)
         case "-d":
             del_flag(l)
@@ -19,7 +18,7 @@ func flag(arr []data, l *List) []data {
     return arr
 }
 
-func add_flag(l *List) {
+func add_flag(l *List, arg string) {
     tmp := l.head
     l.head = tmp
     i := 0
@@ -29,7 +28,7 @@ func add_flag(l *List) {
     node := new(Node)
     node.Name = strconv.Itoa(i)
     node.Status = 0
-    node.Name = os.Args[2]
+    node.Name = arg
     tmp.next = node
 }
 
@@ -61,7 +60,7 @@ func del_flag(l *List) {
 func edit_proj_name() {
     _, _, _, a := board_proj()
     projn := ""
-    projn = os.Args[3]
+    projn = os.Args[(len(os.Args)-1)]
     projn = projn[1:]
     s := strconc([]byte("\""), []byte(os.Args[2]))
     for y := 0; y < len(a); y++ {
@@ -92,7 +91,7 @@ func status_flag(arr []data) []data {
                 case "-c":
                     arr[i].Status = CHECK
                 case "-e":
-                    arr[i].Name = os.Args[3]
+                    arr[i].Name = os.Args[(len(os.Args)-1)]
                 }
             }
         }
